@@ -1,0 +1,459 @@
+{
+  "employees": [
+    {
+      "emp_id": "EMP001",
+      "name": "วิชัย ศรีสมบูรณ์",
+      "department": "IT",
+      "skills": [
+        "Python",
+        "Cloud Architecture",
+        "Kubernetes",
+        "System Design",
+        "SQL"
+      ]
+    },
+    {
+      "emp_id": "EMP002",
+      "name": "สุรัตน์ พงษ์ประเสริฐ",
+      "department": "DevOps",
+      "skills": [
+        "Kubernetes",
+        "Terraform",
+        "CI/CD Pipeline",
+        "Linux Administration",
+        "Monitoring"
+      ]
+    },
+    {
+      "emp_id": "EMP003",
+      "name": "นภาพร เจริญสุข",
+      "department": "Sales",
+      "skills": [
+        "Negotiation",
+        "CRM",
+        "Python",
+        "Data Analysis",
+        "Presentation"
+      ]
+    },
+    {
+      "emp_id": "EMP004",
+      "name": "ธนากร มั่นคง",
+      "department": "IT",
+      "skills": [
+        "Cybersecurity",
+        "Penetration Testing",
+        "Network Security"
+      ]
+    },
+    {
+      "emp_id": "EMP005",
+      "name": "พิมพ์ชนก อรุณรัตน์",
+      "department": "Support",
+      "skills": [
+        "SQL",
+        "Troubleshooting",
+        "Linux Administration"
+      ]
+    },
+    {
+      "emp_id": "EMP006",
+      "name": "อนุชา วงศ์สวัสดิ์",
+      "department": "IT",
+      "skills": [
+        "Python",
+        "SQL",
+        "Data Analysis"
+      ]
+    },
+    {
+      "emp_id": "EMP007",
+      "name": "กัลยา ทองดี",
+      "department": "Sales",
+      "skills": [
+        "Negotiation",
+        "CRM",
+        "Presentation"
+      ]
+    },
+    {
+      "emp_id": "EMP008",
+      "name": "ประสิทธิ์ บุญยืน",
+      "department": "DevOps",
+      "skills": [
+        "Terraform",
+        "CI/CD Pipeline",
+        "Monitoring"
+      ]
+    },
+    {
+      "emp_id": "EMP009",
+      "name": "รัตนา สุขใจ",
+      "department": "Support",
+      "skills": [
+        "Troubleshooting",
+        "CRM",
+        "SQL"
+      ]
+    },
+    {
+      "emp_id": "EMP010",
+      "name": "เอกชัย ลิมปิชาติ",
+      "department": "IT",
+      "skills": [
+        "Network Security",
+        "Linux Administration",
+        "Troubleshooting"
+      ]
+    },
+    {
+      "emp_id": "EMP011",
+      "name": "สมศรี ภูมิรัตน์",
+      "department": "Support",
+      "skills": [
+        "CRM",
+        "Presentation",
+        "Negotiation"
+      ]
+    },
+    {
+      "emp_id": "EMP012",
+      "name": "ชาญวิทย์ ดำรงค์ศักดิ์",
+      "department": "DevOps",
+      "skills": [
+        "Kubernetes",
+        "CI/CD Pipeline",
+        "Terraform"
+      ]
+    },
+    {
+      "emp_id": "EMP013",
+      "name": "วันดี ประทุมมาศ",
+      "department": "Sales",
+      "skills": [
+        "Negotiation",
+        "Presentation",
+        "CRM",
+        "Data Analysis"
+      ]
+    },
+    {
+      "emp_id": "EMP014",
+      "name": "ภัทรพงศ์ สิทธิชัย",
+      "department": "IT",
+      "skills": [
+        "System Design",
+        "Python",
+        "SQL",
+        "Monitoring"
+      ]
+    },
+    {
+      "emp_id": "EMP015",
+      "name": "จิรัฐิติ์ คงสมบัติ",
+      "department": "Support",
+      "skills": [
+        "Troubleshooting",
+        "SQL",
+        "Linux Administration",
+        "Monitoring"
+      ]
+    }
+  ],
+  "tickets": [
+    {
+      "ticket_id": "TKT001",
+      "customer_company": "บริษัท ไทยพาณิชย์ดิจิทัล จำกัด",
+      "issue_description": "ระบบ Cloud ของบริษัทล่มกะทันหัน ไม่สามารถเข้าถึงข้อมูลสำคัญได้ ต้องการผู้เชี่ยวชาญด้าน Cloud Architecture มาวิเคราะห์และแก้ไขโดยด่วน",
+      "required_skills": [
+        "Cloud Architecture",
+        "System Design"
+      ]
+    },
+    {
+      "ticket_id": "TKT002",
+      "customer_company": "บริษัท กรุงเทพอินโนเวชั่น จำกัด",
+      "issue_description": "พบการโจมตีระบบเครือข่ายจากภายนอก ข้อมูลลูกค้าอาจรั่วไหล ต้องการทีม Cybersecurity มาตรวจสอบและปิดช่องโหว่โดยทันที",
+      "required_skills": [
+        "Cybersecurity",
+        "Network Security"
+      ]
+    },
+    {
+      "ticket_id": "TKT003",
+      "customer_company": "บริษัท สยามเทคโนโลยี จำกัด",
+      "issue_description": "ต้องการออกแบบระบบ Cloud ใหม่ทั้งหมดเพื่อรองรับการขยายตัวของธุรกิจในปีหน้า โดยต้องคำนึงถึงความปลอดภัยและความพร้อมใช้งานสูง",
+      "required_skills": [
+        "Cloud Architecture",
+        "System Design",
+        "Cybersecurity"
+      ]
+    },
+    {
+      "ticket_id": "TKT004",
+      "customer_company": "ธนาคารออมสินดิจิทัล",
+      "issue_description": "ระบบ Kubernetes Cluster หยุดทำงานกะทันหัน ส่งผลให้บริการออนไลน์ทุกประเภทใช้งานไม่ได้ ต้องการความช่วยเหลือเร่งด่วน",
+      "required_skills": [
+        "Kubernetes",
+        "CI/CD Pipeline"
+      ]
+    },
+    {
+      "ticket_id": "TKT005",
+      "customer_company": "บริษัท แอดวานซ์ โลจิสติกส์ จำกัด",
+      "issue_description": "ระบบฐานข้อมูลทำงานช้ามาก Query บางตัวใช้เวลานานกว่า 10 นาที ส่งผลกระทบต่อการให้บริการลูกค้าอย่างรุนแรง",
+      "required_skills": [
+        "SQL",
+        "Python",
+        "Troubleshooting"
+      ]
+    },
+    {
+      "ticket_id": "TKT006",
+      "customer_company": "บริษัท นอร์ทสตาร์ คอนซัลติ้ง จำกัด",
+      "issue_description": "ต้องการผู้เชี่ยวชาญด้าน Cloud Architecture มาช่วยประเมินและวางแผนการย้ายระบบ On-Premise ทั้งหมดขึ้น Cloud ภายใน 3 เดือน",
+      "required_skills": [
+        "Cloud Architecture",
+        "Terraform"
+      ]
+    },
+    {
+      "ticket_id": "TKT007",
+      "customer_company": "บริษัท อีสเทิร์น ดาต้า จำกัด",
+      "issue_description": "ต้องการวิเคราะห์ข้อมูลยอดขายย้อนหลัง 3 ปี เพื่อสร้าง Dashboard สำหรับผู้บริหาร พร้อมระบบรายงานอัตโนมัติ",
+      "required_skills": [
+        "Python",
+        "Data Analysis",
+        "SQL"
+      ]
+    },
+    {
+      "ticket_id": "TKT008",
+      "customer_company": "บริษัท ไทยรุ่งเรือง อุตสาหกรรม จำกัด",
+      "issue_description": "ระบบ CI/CD Pipeline ทำงานผิดพลาด ทำให้ไม่สามารถ Deploy โค้ดใหม่ได้ ส่งผลให้การพัฒนาซอฟต์แวร์หยุดชะงัก",
+      "required_skills": [
+        "CI/CD Pipeline",
+        "Kubernetes",
+        "Troubleshooting"
+      ]
+    },
+    {
+      "ticket_id": "TKT009",
+      "customer_company": "บริษัท เซ็นทรัล ฟินเทค จำกัด",
+      "issue_description": "ตรวจพบการเจาะระบบ Cybersecurity อย่างซับซ้อน มีการพยายาม Penetration เข้าสู่ระบบหลักขององค์กร ต้องการผู้เชี่ยวชาญเร่งด่วน",
+      "required_skills": [
+        "Cybersecurity",
+        "Penetration Testing"
+      ]
+    },
+    {
+      "ticket_id": "TKT010",
+      "customer_company": "บริษัท วิชั่น พร็อพเพอร์ตี้ จำกัด",
+      "issue_description": "ลูกค้าร้องเรียนว่าระบบ CRM ของบริษัทไม่แสดงข้อมูลที่ถูกต้อง ทำให้ทีมขายติดต่อลูกค้าผิดพลาดบ่อยครั้ง",
+      "required_skills": [
+        "CRM",
+        "SQL",
+        "Troubleshooting"
+      ]
+    },
+    {
+      "ticket_id": "TKT011",
+      "customer_company": "บริษัท เมโทรไลน์ คอมมิวนิเคชั่น จำกัด",
+      "issue_description": "ต้องการปรึกษาและเจรจาสัญญาบริการซอฟต์แวร์ระยะยาว 5 ปี มูลค่าสูง ต้องการทีมที่มีทักษะการเจรจาและเข้าใจเทคนิคด้าน IT",
+      "required_skills": [
+        "Negotiation",
+        "Presentation",
+        "System Design"
+      ]
+    },
+    {
+      "ticket_id": "TKT012",
+      "customer_company": "บริษัท ยูนิตี้ แมนูแฟคเจอริ่ง จำกัด",
+      "issue_description": "Server Linux หลักเกิดข้อผิดพลาดระดับ Kernel ทำให้ระบบผลิตหยุดชะงักทั้งหมด ต้องการผู้เชี่ยวชาญมาแก้ไขโดยด่วน",
+      "required_skills": [
+        "Linux Administration",
+        "Troubleshooting",
+        "Monitoring"
+      ]
+    },
+    {
+      "ticket_id": "TKT013",
+      "customer_company": "บริษัท ไพบูลย์ เอ็นเนอร์จี จำกัด",
+      "issue_description": "ต้องการ Cloud Architecture ที่ปลอดภัยสูงสุดสำหรับระบบควบคุมพลังงาน ซึ่งต้องเป็นไปตามมาตรฐานความปลอดภัยระดับชาติ",
+      "required_skills": [
+        "Cloud Architecture",
+        "Cybersecurity",
+        "Network Security"
+      ]
+    },
+    {
+      "ticket_id": "TKT014",
+      "customer_company": "บริษัท สมาร์ทโฮม เทคโนโลยี จำกัด",
+      "issue_description": "ระบบ Terraform Scripts ทำงานผิดพลาดระหว่างการสร้าง Infrastructure ใหม่ ทำให้ทรัพยากรบน Cloud ถูกสร้างซ้ำและเกิดค่าใช้จ่ายสูงผิดปกติ",
+      "required_skills": [
+        "Terraform",
+        "CI/CD Pipeline",
+        "Monitoring"
+      ]
+    },
+    {
+      "ticket_id": "TKT015",
+      "customer_company": "บริษัท เพรสทีจ รีเทล กรุ๊ป จำกัด",
+      "issue_description": "ทีมขายต้องการฝึกอบรมและ Presentation เกี่ยวกับผลิตภัณฑ์ใหม่ให้กับลูกค้าองค์กรขนาดใหญ่ รวมถึงต้องการสคริปต์การเจรจาต่อรองที่มีประสิทธิภาพ",
+      "required_skills": [
+        "Presentation",
+        "Negotiation",
+        "CRM"
+      ]
+    },
+    {
+      "ticket_id": "TKT016",
+      "customer_company": "บริษัท อัลฟา ไบโอเทค จำกัด",
+      "issue_description": "ต้องการพัฒนา Python Script สำหรับประมวลผลข้อมูลงานวิจัยจำนวนมากโดยอัตโนมัติ เชื่อมต่อกับฐานข้อมูลกลางและส่งรายงานทุกคืน",
+      "required_skills": [
+        "Python",
+        "SQL",
+        "Data Analysis"
+      ]
+    },
+    {
+      "ticket_id": "TKT017",
+      "customer_company": "บริษัท ทรัพย์ไพศาล การเงิน จำกัด",
+      "issue_description": "ระบบ Network มีปัญหาด้านความปลอดภัย พบ Traffic ที่น่าสงสัยจากภายนอก ต้องการการตรวจสอบและเสริมความแข็งแกร่งให้ระบบ",
+      "required_skills": [
+        "Network Security",
+        "Cybersecurity",
+        "Penetration Testing"
+      ]
+    },
+    {
+      "ticket_id": "TKT018",
+      "customer_company": "บริษัท ดีไซน์ สเปซ สตูดิโอ จำกัด",
+      "issue_description": "ระบบ Monitoring แจ้งเตือนผิดพลาดตลอดเวลาทั้งที่ระบบทำงานปกติ ต้องการปรับแต่ง Threshold และ Alert Rules ใหม่ทั้งหมด",
+      "required_skills": [
+        "Monitoring",
+        "Linux Administration",
+        "Troubleshooting"
+      ]
+    },
+    {
+      "ticket_id": "TKT019",
+      "customer_company": "บริษัท โกลเดน ฮาร์เวสต์ อะกริ จำกัด",
+      "issue_description": "ต้องการออกแบบและพัฒนาระบบจัดการข้อมูลการเกษตรบน Cloud เพื่อให้เกษตรกรเข้าถึงข้อมูลได้แบบ Real-time ผ่านมือถือ",
+      "required_skills": [
+        "Cloud Architecture",
+        "System Design",
+        "Python"
+      ]
+    },
+    {
+      "ticket_id": "TKT020",
+      "customer_company": "บริษัท ไทยแอร์เวย์ โซลูชั่นส์ จำกัด",
+      "issue_description": "ต้องการจัดการเจรจาต่อรองสัญญาจัดซื้อซอฟต์แวร์มูลค่าหลายล้านบาท พร้อม Presentation แผนการติดตั้งระบบต่อคณะกรรมการบริษัท",
+      "required_skills": [
+        "Negotiation",
+        "Presentation",
+        "Python"
+      ]
+    },
+    {
+      "ticket_id": "TKT021",
+      "customer_company": "บริษัท สุวรรณภูมิ ทรานสปอร์ต จำกัด",
+      "issue_description": "ระบบ CI/CD หยุดทำงานกะทันหันหลังอัปเกรด ทำให้ไม่สามารถ Deploy แอปพลิเคชันได้ มีผลกระทบต่อการให้บริการลูกค้า",
+      "required_skills": [
+        "CI/CD Pipeline",
+        "Kubernetes",
+        "Linux Administration"
+      ]
+    },
+    {
+      "ticket_id": "TKT022",
+      "customer_company": "บริษัท เอเชีย พาวเวอร์ กริด จำกัด",
+      "issue_description": "ต้องการผู้เชี่ยวชาญด้าน Cybersecurity มาทำ Security Audit ระบบโครงสร้างพื้นฐานทั้งหมด และจัดทำรายงานเพื่อนำเสนอผู้ถือหุ้น",
+      "required_skills": [
+        "Cybersecurity",
+        "Penetration Testing",
+        "Network Security"
+      ]
+    },
+    {
+      "ticket_id": "TKT023",
+      "customer_company": "บริษัท คลาวด์เนทีฟ โซลูชั่น จำกัด",
+      "issue_description": "ต้องการคำปรึกษาเกี่ยวกับการออกแบบสถาปัตยกรรม Cloud แบบ Multi-Region เพื่อรองรับลูกค้าทั่วเอเชียตะวันออกเฉียงใต้",
+      "required_skills": [
+        "Cloud Architecture",
+        "System Design",
+        "Terraform"
+      ]
+    },
+    {
+      "ticket_id": "TKT024",
+      "customer_company": "บริษัท เฟิร์สคลาส อีเลิร์นนิ่ง จำกัด",
+      "issue_description": "ระบบฐานข้อมูลนักเรียนเกิดความเสียหาย ข้อมูลการสอบของนักเรียนหลายพันคนอาจสูญหาย ต้องการกู้คืนข้อมูลโดยเร่งด่วน",
+      "required_skills": [
+        "SQL",
+        "Python",
+        "Troubleshooting"
+      ]
+    },
+    {
+      "ticket_id": "TKT025",
+      "customer_company": "บริษัท ดิจิทัล เฮลท์แคร์ จำกัด",
+      "issue_description": "ต้องการวิเคราะห์ข้อมูลผู้ป่วยขนาดใหญ่เพื่อสร้างโมเดลทำนายโรค พร้อม Dashboard สำหรับแพทย์ใช้งานแบบ Real-time",
+      "required_skills": [
+        "Data Analysis",
+        "Python",
+        "SQL"
+      ]
+    },
+    {
+      "ticket_id": "TKT026",
+      "customer_company": "บริษัท ฟิวเจอร์ มีเดีย กรุ๊ป จำกัด",
+      "issue_description": "ระบบ Linux Server สำหรับ Streaming Media ล่ม ลูกค้าผู้ใช้งานกว่าแสนคนไม่สามารถใช้บริการได้ ต้องการแก้ไขด่วนที่สุด",
+      "required_skills": [
+        "Linux Administration",
+        "Monitoring",
+        "Troubleshooting"
+      ]
+    },
+    {
+      "ticket_id": "TKT027",
+      "customer_company": "บริษัท อินโนเวท ฟู้ด เทค จำกัด",
+      "issue_description": "ทีมขายต้องการเครื่องมือ CRM ใหม่และการฝึกอบรมการใช้งาน รวมถึงต้องการกลยุทธ์การเจรจาต่อรองกับลูกค้าขนาดใหญ่",
+      "required_skills": [
+        "CRM",
+        "Negotiation",
+        "Data Analysis"
+      ]
+    },
+    {
+      "ticket_id": "TKT028",
+      "customer_company": "บริษัท เนชั่นแนล ไซเบอร์เซค จำกัด",
+      "issue_description": "พบช่องโหว่ระดับวิกฤตในระบบความปลอดภัย ต้องการทีม Cybersecurity มาทำ Emergency Response และ Patch ระบบทันที",
+      "required_skills": [
+        "Cybersecurity",
+        "Network Security"
+      ]
+    },
+    {
+      "ticket_id": "TKT029",
+      "customer_company": "บริษัท สตาร์ทอัพ แล็บ จำกัด",
+      "issue_description": "ต้องการออกแบบ System Architecture สำหรับแพลตฟอร์ม SaaS ใหม่ที่รองรับผู้ใช้ได้ 1 ล้านคนพร้อมกัน โดยมีต้นทุนต่ำที่สุด",
+      "required_skills": [
+        "System Design",
+        "Cloud Architecture",
+        "Kubernetes"
+      ]
+    },
+    {
+      "ticket_id": "TKT030",
+      "customer_company": "บริษัท ริเวอร์ไซด์ ก่อสร้าง จำกัด",
+      "issue_description": "ต้องการ Presentation สรุปผลการดำเนินโครงการ IT ประจำปีต่อผู้บริหารระดับสูง พร้อมแผนงานปีหน้าที่ต้องการงบประมาณเพิ่มเติม",
+      "required_skills": [
+        "Presentation",
+        "Negotiation",
+        "Data Analysis"
+      ]
+    }
+  ]
+}
