@@ -1,226 +1,295 @@
-# 🏢 Enterprise Knowledge Graph System
+# Enterprise Knowledge Graph Project
 
-ระบบการจัดการกราฟความรู้องค์กร (Enterprise Knowledge Graph) ที่ช่วยในการวิเคราะห์และจัดสรรพนักงานตามทักษะที่มี
+ระบบ Enterprise Knowledge Graph สำหรับจัดการความรู้ทักษะของพนักงาน จับคู่คนกับงาน วิเคราะห์ความเสี่ยงด้านทรัพยากร และช่วยตัดสินใจด้วยข้อมูลเชิงกราฟร่วมกับ AI
 
-## ✨ ฟีเจอร์หลัก
+## ภาพรวมโปรเจค
 
-- **🔍 ค้นหาพนักงาน** - ค้นหาพนักงานตามหมายเลข ID หรือทักษะ
-- **📊 วิเคราะห์กราฟ** - ค้นหา Bottleneck Skills, Bridge Employees, Skill Gaps
-- **🎯 จัดสรรทรัพยากร** - หา Employee ที่เหมาะสมสำหรับทิกเก็ต
-- **📈 สถิติกำลังงาน** - ดูข้อมูลทักษะ ภาค และพนักงาน
-- **🌐 Web Interface** - หน้าเว็บสวยงามและใช้งานง่าย
+โปรเจคนี้ออกแบบมาเพื่อแก้ปัญหาที่พบบ่อยในองค์กร เช่น
+- ไม่รู้ว่าใครมีทักษะอะไร
+- งานสำคัญพึ่งพาคนเพียงไม่กี่คน (Single Point of Failure)
+- จัดทีมให้เหมาะกับงานได้ยาก
+- มองไม่เห็นภาพรวมช่องว่างทักษะ (Skill Gap) ของทั้งองค์กร
 
-## 📦 ส่วนประกอบ
+ระบบจะเก็บข้อมูลพนักงาน ทักษะ และทิกเก็ตงานในรูป Knowledge Graph (Neo4j) แล้วเปิดให้ค้นหา วิเคราะห์ และแนะนำการจัดสรรทรัพยากรผ่าน Web Application
 
-```
-project/
-├── api_client.py              # เชื่อมต่อกับ KKU AI API
-├── generate_synthetic_data.py # สร้างข้อมูลจำลอง
-├── transform_json_to_csv.py   # แปลง JSON เป็น CSV
-├── neo4j_connector.py         # เชื่อมต่อ Neo4j Database
-├── load_csv_to_neo4j.py       # โหลด CSV เข้า Neo4j
-├── cypher_queries.py          # Query Builder สำหรับ Neo4j
-├── graph_analyzer.py          # วิเคราะห์ Knowledge Graph
-├── app.py                     # Flask Web Application
-├── data/                      # ข้อมูล CSV
-│   ├── nodes_employee.csv
-│   ├── nodes_skill.csv
-│   ├── nodes_ticket.csv
-│   ├── edges_has_skill.csv
-│   └── edges_requires_skill.csv
-├── templates/                 # HTML Templates
-│   ├── index.html
-│   ├── query.html
-│   └── dashboard.html
-└── static/                    # Static files (CSS, JS)
-```
+## สิ่งที่ทำได้ในโปรเจคทั้งหมด
 
-## 🚀 ขั้นตอนการใช้งาน
+## 1) Data Pipeline (สร้างและเตรียมข้อมูล)
 
-### 1. ติดตั้ง Dependencies
+- สร้างข้อมูลจำลองแบบซับซ้อนด้วย AI
+  - ไฟล์: generate_synthetic_data.py
+  - สร้างพนักงาน/ทิกเก็ตที่มีลักษณะ Hub, Bottleneck, Bridge เพื่อนำไปวิเคราะห์เชิงโครงสร้าง
+
+- แปลง JSON เป็น CSV สำหรับ Neo4j
+  - ไฟล์: transform_json_to_csv.py
+  - แปลงเป็น 5 ชุดข้อมูล: employee, skill, ticket, HAS_SKILL, REQUIRES_SKILL
+
+- โหลด CSV เข้า Neo4j
+  - ไฟล์: load_csv_to_neo4j.py
+  - โหลด node และ relationship ครบทั้งกราฟ
+  - มีตัวเลือกล้างข้อมูลเดิมก่อนโหลดใหม่
+
+## 2) Query และการค้นหาเชิงปฏิบัติการ
+
+- ค้นหาพนักงานด้วย Employee ID
+- ค้นหาพนักงานจากชื่อทักษะ
+- ค้นหาพนักงานที่เหมาะกับ Ticket พร้อมระดับความครอบคลุมทักษะ
+- ดูรายการข้อมูลทั้งหมดของพนักงาน/ทักษะ/ทิกเก็ต
+
+ใช้ผ่าน
+- หน้าเว็บ query/list
+- API ของ Flask
+- Cypher Query Builder แบบ interactive ใน terminal
+
+ไฟล์หลัก
+- app.py
+- cypher_queries.py
+
+## 3) Graph Analytics เชิงลึก
+
+ระบบวิเคราะห์โครงสร้างกราฟเพื่อหา insight สำคัญ
+
+- Bottleneck Skills
+  - ทักษะที่มีคนทำน้อยแต่งานต้องการมาก
+
+- Critical Bottlenecks
+  - ทักษะที่มีผู้เชี่ยวชาญเพียงคนเดียวแต่มีหลายงานที่ต้องพึ่งพา
+
+- Bridge Employees
+  - พนักงานที่เชื่อมหลายทักษะ/หลายบริบท ช่วยลดคอขวดของทีม
+
+- High Demand Skills
+  - ทักษะที่มีความต้องการสูงและสถานะความพร้อมของบุคลากร
+
+- Skill Gaps
+  - ทักษะที่ Ticket ต้องการแต่ยังไม่มีใครในองค์กรทำได้
+
+- Department Strengths
+  - ความเชี่ยวชาญเด่นของแต่ละแผนก (Top Skills)
+
+ไฟล์หลัก
+- graph_analyzer.py
+- app.py
+
+## 4) Interactive Graph Visualization
+
+- แสดง Network ของ node และ edge ทั้งหมดแบบ interactive
+- แยกสี node ตามประเภท employee/skill/ticket
+- กดดูรายละเอียด node, จำนวน connection, fit view, reset layout
+
+ไฟล์หลัก
+- templates/visualization.html
+- app.py (endpoint /api/graph-data)
+
+## 5) AI Recommendations สำหรับการตัดสินใจ
+
+มีหน้าแนะนำด้วย AI 2 โหมด
+- Recommend Employee: แนะนำคนที่เหมาะที่สุดสำหรับ Ticket
+- Recommend Team: แนะนำการจัดทีม 2-4 คนแบบสมดุล
+
+AI จะอ้างอิงข้อมูลจากกราฟจริง เช่น
+- ระดับ bottleneck risk
+- จำนวนทักษะและภาระงานที่พึ่งพา
+- ความซับซ้อนของ ticket
+- บริบทแผนกและความร่วมมือข้ามทีม
+
+ไฟล์หลัก
+- app.py (endpoint /api/recommendations/*)
+- templates/recommendations.html
+
+## 6) Web Dashboard ครบวงจร
+
+หน้าเว็บที่มีในระบบ
+- หน้าหลักสรุปสถิติกราฟ
+- หน้าค้นหา (employee/skill/ticket)
+- หน้า dashboard วิเคราะห์ความเสี่ยงและความต้องการทักษะ
+- หน้า list สำหรับดูข้อมูลทั้งหมด
+- หน้า visualization
+- หน้า AI recommendations
+
+ไฟล์หลัก
+- templates/index.html
+- templates/query.html
+- templates/dashboard.html
+- templates/list_employees.html
+- templates/list_skills.html
+- templates/list_tickets.html
+
+## โมเดลข้อมูลในกราฟ
+
+Node Types
+- employee
+- skill
+- ticket
+
+Relationships
+- (employee)-[:HAS_SKILL]->(skill)
+- (ticket)-[:REQUIRES_SKILL]->(skill)
+
+แนวคิดนี้ทำให้วิเคราะห์ความสัมพันธ์แบบหลายชั้นได้ง่ายกว่าฐานข้อมูลแบบตารางทั่วไป
+
+## โครงสร้างไฟล์สำคัญ
+
+- app.py: Flask app และ API endpoints ทั้งหมด
+- neo4j_connector.py: จัดการการเชื่อมต่อและรัน Cypher
+- cypher_queries.py: query business logic สำหรับค้นหา/สรุปกราฟ
+- graph_analyzer.py: วิเคราะห์ bottleneck/bridge/gap/high-demand
+- load_csv_to_neo4j.py: โหลดข้อมูล CSV เข้าฐาน Neo4j
+- transform_json_to_csv.py: แปลง JSON เป็น CSV สำหรับกราฟ
+- generate_synthetic_data.py: สร้างข้อมูลจำลองด้วย AI
+- api_client.py: utility เรียก KKU GenAI API
+- templates/: หน้าเว็บทั้งหมด
+- data/: ชุดข้อมูล CSV ที่พร้อมโหลด
+
+## API Endpoints หลัก
+
+Pages
+- GET /
+- GET /query
+- GET /dashboard
+- GET /list/employees
+- GET /list/skills
+- GET /list/tickets
+- GET /visualization
+- GET /recommendations
+
+Search APIs
+- POST /api/search-employee
+- POST /api/search-skill
+- POST /api/search-ticket
+
+Analysis APIs
+- GET /api/analysis/bottlenecks
+- GET /api/analysis/critical
+- GET /api/analysis/bridges
+- GET /api/analysis/high-demand
+- GET /api/analysis/gaps
+- GET /api/analysis/departments
+
+Graph/Recommendation APIs
+- GET /api/graph-data
+- GET /api/tickets-list
+- POST /api/recommendations/employee-for-ticket
+- POST /api/recommendations/team-for-ticket
+
+## วิธีติดตั้งและเริ่มใช้งาน
+
+## 1) เตรียมเครื่องมือ
+
+- Python 3.10+
+- Neo4j 4.x หรือ 5.x
+
+## 2) ติดตั้ง dependencies
 
 ```bash
-# สร้าง virtual environment
 python -m venv .venv
 .venv\Scripts\activate
-
-# ติดตั้ง packages
-pip install neo4j flask requests python-dotenv rich pandas
+pip install flask neo4j pandas requests python-dotenv rich
 ```
 
-### 2. ตั้งค่า Neo4j Database
+## 3) ตั้งค่าไฟล์ .env
 
-```bash
-# ติดตั้ง Neo4j (ใช้ Neo4j Desktop หรือ Docker)
-# Docker example:
-docker run -d \
-  -p 7474:7474 \
-  -p 7687:7687 \
-  -e NEO4J_AUTH=neo4j/password \
-  neo4j:latest
-```
-
-### 3. ตั้งค่า Environment Variables
-
-สร้างไฟล์ `.env` ในโปรเจกต์:
+สร้างไฟล์ .env ที่ root project
 
 ```env
-# Neo4j Configuration
+# Neo4j
 NEO4J_URI=bolt://localhost:7687
 NEO4J_USER=neo4j
 NEO4J_PASSWORD=password
 
-# API Configuration (ถ้าใช้)
-API_KEY=your_api_key_here
+# ใช้กับ api_client.py / generate_synthetic_data.py
+API_KEY=your_kku_genai_api_key
+
+# ใช้กับหน้า Recommendations ในเว็บ
+KKU_GENAI_API_KEY=your_kku_genai_api_key
+KKU_GENAI_API_URL=https://gen.ai.kku.ac.th/api/v1/chat/completions
 ```
 
-### 4. สร้างข้อมูลจำลอง (ถ้ายังไม่มี)
+## 4) เตรียมข้อมูล
+
+ทางเลือก A: ใช้ข้อมูลตัวอย่างที่อยู่ในโฟลเดอร์ data ได้ทันที
+
+ทางเลือก B: สร้างข้อมูลใหม่
 
 ```bash
-# สร้างข้อมูล JSON จาก AI API
 python generate_synthetic_data.py
-
-# แปลง JSON เป็น CSV
 python transform_json_to_csv.py
 ```
 
-### 5. โหลดข้อมูลเข้า Neo4j
+หมายเหตุ
+- transform_json_to_csv.py จะสร้างไฟล์ CSV ที่ root ของโปรเจค
+- หากต้องการใช้ loader ค่า default ให้นำไฟล์ CSV ที่สร้างใหม่ไปไว้ในโฟลเดอร์ data
+
+## 5) โหลดข้อมูลเข้า Neo4j
 
 ```bash
-# โหลด CSV files เข้า Neo4j
 python load_csv_to_neo4j.py
 ```
 
-### 6. เรียกใช้ Web Application
+## 6) รัน Web Application
 
 ```bash
-# เริ่มเซิร์ฟเวอร์
 python app.py
-
-# เปิดบ้านเว็บ
-# http://localhost:5000
 ```
 
-## 📖 การใช้งาน
+เปิดใช้งานที่
+- http://localhost:5000
 
-### หน้าหลัก
-- แสดงสถิติกราฟทั่วไป (พนักงาน, ทักษะ, ทิกเก็ต)
-- ลิงก์ไปยังหน้าค้นหาและวิเคราะห์
-
-### ค้นหา (Search)
-- **ค้นหาพนักงาน** - ใส่ Employee ID เช่น `EMP001`
-- **ค้นหาตามทักษะ** - ใส่ชื่อทักษะ เช่น `Python`
-- **หาพนักงานสำหรับทิกเก็ต** - ใส่ Ticket ID เช่น `TKT001`
-
-### วิเคราะห์ (Dashboard)
-1. **Critical Bottlenecks** 🚨 - ทักษะที่มีคนเดียว และต้องเยอะ
-2. **Bottleneck Skills** ⚠️ - ทักษะที่เสี่ยง (คนน้อย ต้องเยอะ)
-3. **Bridge Employees** 🌉 - พนักงานที่เชื่อมต่อระหว่างกลุ่ม
-4. **High Demand Skills** 📈 - ทักษะที่มีความต้องการสูง
-5. **Skill Gaps** ❌ - ทักษะที่ไม่มีใครมี แต่ต้องการ
-6. **Department Strengths** 🏢 - ความเชี่ยวชาญของแต่ละแผนก
-
-## 📊 ตัวอย่างการ Query
-
-### Cypher Query Builder
+## 7) (ทางเลือก) รันโหมดวิเคราะห์ผ่าน terminal
 
 ```bash
-# เรียกใช้ interactive query builder
+python graph_analyzer.py
 python cypher_queries.py
 ```
 
-ตัวอย่าง Query:
-```cypher
-# หา employees ที่มีทักษะ Python
-MATCH (e:employee)-[:HAS_SKILL]->(s:skill {skill_name: 'Python'})
-RETURN e.name, e.department
+## ประโยชน์ของโปรเจค
 
-# หา bottleneck skills
-MATCH (e:employee)-[:HAS_SKILL]->(s:skill)
-WITH s, COUNT(DISTINCT e) as emp_count
-WHERE emp_count <= 1
-RETURN s.skill_name, emp_count
-```
+## เชิงธุรกิจ
 
-### Graph Analyzer
+- ลดความเสี่ยงจากการพึ่งพาคนเก่งคนเดียว
+- วางแผนจ้างงานและอัปสกิลจากข้อมูลจริง
+- จัดสรรคนให้เหมาะกับงานได้เร็วขึ้น
+- เพิ่มความต่อเนื่องของการส่งมอบงานให้ลูกค้า
 
-```bash
-# เรียกใช้ analysis
-python graph_analyzer.py
-```
+## เชิงบริหารทีม
 
-## 🔧 Configuration
+- เห็นภาพความเชี่ยวชาญของแต่ละแผนกอย่างเป็นระบบ
+- ออกแบบทีมข้ามสายงานได้ดีขึ้น
+- ใช้ bridge employee อย่างมีแผน ลดงานคอขวด
 
-### Neo4j Connection
-ปรับได้ใน `.env`:
-```env
-NEO4J_URI=bolt://localhost:7687
-NEO4J_USER=neo4j
-NEO4J_PASSWORD=password
-```
+## เชิงเทคนิคและข้อมูล
 
-### Flask Server
-ปรับได้ใน `app.py`:
-```python
-app.run(debug=True, host='0.0.0.0', port=5000)
-```
+- ใช้กราฟสำหรับวิเคราะห์ความสัมพันธ์ซับซ้อนได้ตรงจุด
+- มีทั้ง API และ UI พร้อมใช้งานต่อยอด
+- เชื่อม AI เข้ากับข้อมูลกราฟเพื่อสร้างคำแนะนำเชิงบริบท
 
-## 📝 API Endpoints
+## ตัวอย่างการนำไปใช้งาน
 
-- `GET /` - หน้าหลัก
-- `GET /query` - หน้าค้นหา
-- `GET /dashboard` - หน้าวิเคราะห์
-- `POST /api/search-employee` - ค้นหาพนักงาน
-- `POST /api/search-skill` - ค้นหาตามทักษะ
-- `POST /api/search-ticket` - ค้นหาพนักงานสำหรับทิกเก็ต
-- `GET /api/analysis/bottlenecks` - Bottleneck Skills
-- `GET /api/analysis/critical` - Critical Bottlenecks
-- `GET /api/analysis/bridges` - Bridge Employees
-- `GET /api/analysis/high-demand` - High Demand Skills
-- `GET /api/analysis/gaps` - Skill Gaps
-- `GET /api/analysis/departments` - Department Strengths
+- ทีม PMO ใช้ดูว่าทิกเก็ตใหม่ควร assign ให้ใคร
+- ทีม HR ใช้หา skill gap เพื่อวางแผนอบรมรายไตรมาส
+- ทีมผู้บริหารใช้ dashboard ติดตามความเสี่ยงเชิงบุคลากร
+- ทีม Technical Lead ใช้ visualization เพื่อวิเคราะห์ dependency ของทักษะ
 
-## 🛠️ Troubleshooting
+## Troubleshooting แบบย่อ
 
-### ปัญหา: ไม่สามารถเชื่อมต่อ Neo4j
-```bash
-# ตรวจสอบว่า Neo4j running
-docker ps
+- เชื่อม Neo4j ไม่ได้
+  - ตรวจสอบ NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD ใน .env
+  - ตรวจสอบว่า Neo4j service ทำงานอยู่จริง
 
-# ตรวจสอบ connection settings
-# ใน .env ให้ตรงกับการตั้งค่า Neo4j
-```
+- หน้า Recommendations ใช้งานไม่ได้
+  - ตรวจสอบ KKU_GENAI_API_KEY ใน .env
+  - ตรวจสอบว่า endpoint API ภายนอกเข้าถึงได้
 
-### ปัญหา: CSV ไม่โหลดเข้า
-```bash
-# ตรวจสอบว่า CSV files อยู่ในโฟลเดอร์ data/
-# ลองลบข้อมูลเดิมแล้วโหลดใหม่
-python load_csv_to_neo4j.py
-```
+- โหลด CSV ไม่เข้า
+  - ตรวจสอบว่าไฟล์อยู่ในโฟลเดอร์ data และชื่อไฟล์ตรงตามที่ loader ใช้
 
-### ปัญหา: Flask server ไม่เริ่ม
-```bash
-# ตรวจสอบ port 5000 ว่างหรือไม่
-netstat -an | findstr :5000
+## แนวทางพัฒนาต่อ
 
-# ใช้ port อื่นถ้า 5000 ใช้ไป
-python app.py  # แล้วเปลี่ยน port ใน app.py
-```
+- เพิ่มระบบ authentication/authorization
+- เพิ่มการจัดการระดับความชำนาญทักษะ (proficiency level)
+- เพิ่มการวิเคราะห์เชิงเวลา เช่น trend ความต้องการทักษะรายเดือน
+- เพิ่ม test suite และ CI pipeline สำหรับ production readiness
 
-## 📚 หมายเหตุ
+## License
 
-- ระบบสมมติว่าข้อมูล CSV มีโครงสร้างถูกต้อง
-- จำนวน nodes ใหญ่อาจต้องเวลาในการโหลด
-- ต้องใช้ Neo4j version 4.0 ขึ้นไป
-
-## 📄 License
-
-Internal Project
-
-## 👨‍💼 Support
-
-สำหรับคำถามหรือปัญหา ติดต่อ Project Owner
-
----
-
-**🎉 ระบบพร้อมใช้งาน!**
+Internal / Internship Project
