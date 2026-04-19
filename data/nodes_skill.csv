@@ -1,18 +1,18 @@
-﻿skill_id
-CI/CD Pipeline
-CRM
-Cloud Architecture
-Cybersecurity
-Data Analysis
-Kubernetes
-Linux Administration
-Monitoring
-Negotiation
-Network Security
-Penetration Testing
-Presentation
-Python
-SQL
-System Design
-Terraform
-Troubleshooting
+﻿skill_id,skill_name
+SKILL001,CI/CD Pipeline
+SKILL002,CRM
+SKILL003,Cloud Architecture
+SKILL004,Cybersecurity
+SKILL005,Data Analysis
+SKILL006,Kubernetes
+SKILL007,Linux Administration
+SKILL008,Monitoring
+SKILL009,Negotiation
+SKILL010,Network Security
+SKILL011,Penetration Testing
+SKILL012,Presentation
+SKILL013,Python
+SKILL014,SQL
+SKILL015,System Design
+SKILL016,Terraform
+SKILL017,Troubleshooting

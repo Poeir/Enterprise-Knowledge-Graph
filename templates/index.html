@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Knowledge Graph</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: white;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .stat-card i {
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .nav-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .nav-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: #333;
+        }
+        
+        .nav-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .nav-card i {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .nav-card h3 {
+            margin-bottom: 10px;
+        }
+        
+        .nav-card p {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏢 Enterprise Knowledge Graph</h1>
+            <p>ระบบจัดการทักษะและการจัดสรรพนักงาน</p>
+        </header>
+        
+        <div class="stats">
+            {% if stats %}
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <div class="stat-value">{{ stats.employees }}</div>
+                <div class="stat-label">พนักงาน</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-graduation-cap"></i>
+                <div class="stat-value">{{ stats.skills }}</div>
+                <div class="stat-label">ทักษะ</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-tickets"></i>
+                <div class="stat-value">{{ stats.tickets }}</div>
+                <div class="stat-label">ทิกเก็ต</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-link"></i>
+                <div class="stat-value">{{ stats.has_skill_relationships }}</div>
+                <div class="stat-label">ทักษะพนักงาน</div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="nav-menu">
+            <a href="/query" class="nav-card">
+                <i class="fas fa-search"></i>
+                <h3>🔍 ค้นหา</h3>
+                <p>ค้นหาพนักงาน ทักษะ และทิกเก็ต</p>
+            </a>
+            
+            <a href="/dashboard" class="nav-card">
+                <i class="fas fa-chart-bar"></i>
+                <h3>📊 วิเคราะห์</h3>
+                <p>ดูข้อมูล Bottleneck, Bridge และ Risk</p>
+            </a>
+            
+            <a href="/list/employees" class="nav-card">
+                <i class="fas fa-users"></i>
+                <h3>👥 รายชื่อพนักงาน</h3>
+                <p>ดูข้อมูลพนักงานและทักษะทั้งหมด</p>
+            </a>
+            
+            <a href="/list/skills" class="nav-card">
+                <i class="fas fa-lightbulb"></i>
+                <h3>💡 รายชื่อทักษะ</h3>
+                <p>ดูทักษะและความต้องการของตลาด</p>
+            </a>
+            
+            <a href="/list/tickets" class="nav-card">
+                <i class="fas fa-ticket-alt"></i>
+                <h3>🎫 รายชื่อทิกเก็ต</h3>
+                <p>ดูโครงการและทักษะที่ต้องการ</p>
+            </a>
+            
+            <a href="/visualization" class="nav-card">
+                <i class="fas fa-project-diagram"></i>
+                <h3>🔗 Graph Visualization</h3>
+                <p>เห็นความสัมพันธ์แบบ Visual Network</p>
+            </a>
+            
+            <a href="/recommendations" class="nav-card">
+                <i class="fas fa-lightbulb"></i>
+                <h3>💡 AI Recommendations</h3>
+                <p>ขอคำแนะนำจาก AI สำหรับการจัดสรรทรัพยากร</p>
+            </a>
+        </div>
+        
+        <footer>
+            <p>© 2026 Enterprise Knowledge Graph System</p>
+        </footer>
+    </div>
+</body>
+</html>

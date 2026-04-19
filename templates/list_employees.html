@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายชื่อพนักงาน - Enterprise Knowledge Graph</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        header h1 {
+            color: #667eea;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .back-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #764ba2;
+            transform: translateX(-5px);
+        }
+        
+        .content {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .search-box {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background: #667eea;
+            color: white;
+        }
+        
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .emp-id {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .emp-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .department {
+            background: #e8eef7;
+            padding: 5px 10px;
+            border-radius: 20px;
+            color: #667eea;
+            font-size: 0.9em;
+        }
+        
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .skill-badge {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.85em;
+        }
+        
+        .skill-count {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 1.1em;
+        }
+        
+        .stats-row {
+            background: #f5f7ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .stat-item {
+            flex: 1;
+        }
+        
+        .stat-label {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .stat-value {
+            color: #333;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                <i class="fas fa-users"></i> รายชื่อพนักงาน
+            </h1>
+            <a href="/" class="back-btn">
+                <i class="fas fa-arrow-left"></i> กลับหน้าหลัก
+            </a>
+        </header>
+        
+        <div class="content">
+            {% if employees %}
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <div class="stat-label">จำนวนพนักงาน</div>
+                        <div class="stat-value">{{ employees|length }}</div>
+                    </div>
+                </div>
+                
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="ค้นหาพนักงาน (ชื่อหรือแผนก)...">
+                </div>
+                
+                <table id="employeeTable">
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>ชื่อ</th>
+                            <th>แผนก</th>
+                            <th>จำนวนทักษะ</th>
+                            <th>ทักษะ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emp in employees %}
+                        <tr class="emp-row">
+                            <td><span class="emp-id">{{ emp.emp_id }}</span></td>
+                            <td><span class="emp-name">{{ emp.name }}</span></td>
+                            <td><span class="department">{{ emp.department }}</span></td>
+                            <td><span class="skill-count">{{ emp.skill_count }}</span></td>
+                            <td>
+                                <div class="skills">
+                                    {% for skill in emp.skills %}
+                                        <span class="skill-badge">{{ skill }}</span>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty">
+                    <i class="fas fa-inbox"></i><br>
+                    ไม่มีข้อมูลพนักงาน
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            const filter = this.value.toLowerCase();
+            const table = document.getElementById('employeeTable');
+            const rows = table.getElementsByClassName('emp-row');
+            
+            for (let row of rows) {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? '' : 'none';
+            }
+        });
+    </script>
+</body>
+</html>

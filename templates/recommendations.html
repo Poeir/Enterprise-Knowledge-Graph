@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Recommendations - Enterprise Knowledge Graph</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.0/katex.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        header h1 {
+            color: #667eea;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .back-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #764ba2;
+            transform: translateX(-5px);
+        }
+        
+        .content {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .tab-btn {
+            padding: 12px 24px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 1em;
+            color: #999;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .tab-btn:hover {
+            color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-submit {
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-submit:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-submit:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .recommendation-box {
+            background: #f5f7ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .recommendation-box.show {
+            display: block;
+        }
+        
+        .recommendation-box .markdown-content {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+        
+        .loading-spinner.show {
+            display: block;
+        }
+        
+        .error-box {
+            background: #fee;
+            border-left: 4px solid #c33;
+            padding: 15px;
+            border-radius: 5px;
+            color: #c33;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .error-box.show {
+            display: block;
+        }
+        
+        .info-section {
+            background: #e8eef7;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+        
+        .info-section strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        /* Markdown Content Styling */
+        .markdown-content {
+            color: #333;
+            line-height: 1.8;
+        }
+        
+        .markdown-content h1 {
+            color: #667eea;
+            font-size: 2em;
+            margin: 25px 0 15px 0;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .markdown-content h2 {
+            color: #667eea;
+            font-size: 1.6em;
+            margin: 20px 0 12px 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+        }
+        
+        .markdown-content h3 {
+            color: #764ba2;
+            font-size: 1.3em;
+            margin: 15px 0 10px 0;
+        }
+        
+        .markdown-content h4 {
+            color: #764ba2;
+            font-size: 1.1em;
+            margin: 12px 0 8px 0;
+        }
+        
+        .markdown-content p {
+            margin: 10px 0;
+            line-height: 1.8;
+        }
+        
+        .markdown-content strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+        
+        .markdown-content em {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .markdown-content ul,
+        .markdown-content ol {
+            margin: 12px 0;
+            padding-left: 30px;
+        }
+        
+        .markdown-content li {
+            margin: 6px 0;
+            line-height: 1.6;
+        }
+        
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .markdown-content table thead {
+            background: #667eea;
+            color: white;
+        }
+        
+        .markdown-content table th {
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .markdown-content table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .markdown-content table tbody tr:hover {
+            background: #f8f9ff;
+        }
+        
+        .markdown-content code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+            font-size: 0.9em;
+        }
+        
+        .markdown-content pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            line-height: 1.4;
+        }
+        
+        .markdown-content pre code {
+            background: transparent;
+            color: #f8f8f2;
+            padding: 0;
+        }
+        
+        .markdown-content blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+            margin: 15px 0;
+            color: #666;
+            font-style: italic;
+            background: #f5f7ff;
+            padding: 12px 15px;
+            border-radius: 3px;
+        }
+        
+        .markdown-content hr {
+            border: none;
+            border-top: 2px solid #ddd;
+            margin: 20px 0;
+        }
+        
+        .markdown-content .katex {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                <i class="fas fa-lightbulb"></i> AI Recommendations
+            </h1>
+            <a href="/" class="back-btn">
+                <i class="fas fa-arrow-left"></i> กลับหน้าหลัก
+            </a>
+        </header>
+        
+        <div class="content">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('employee')">
+                    <i class="fas fa-user-tie"></i> Recommend Employee
+                </button>
+                <button class="tab-btn" onclick="switchTab('team')">
+                    <i class="fas fa-users"></i> Recommend Team
+                </button>
+            </div>
+            
+            <!-- Employee Recommendation Tab -->
+            <div id="employee-tab" class="tab-content active">
+                <div class="info-section">
+                    <strong>💡 ค้นหาพนักงานที่เหมาะสมที่สุดสำหรับทิกเก็ต</strong>
+                    ระบบ AI จะวิเคราะห์ทักษะที่ต้องการและแนะนำพนักงานที่เหมาะสมที่สุด
+                </div>
+                
+                <div class="input-group">
+                    <label for="ticketSelect">เลือก Ticket *</label>
+                    <select id="ticketSelect">
+                        <option value="">-- Loading tickets... --</option>
+                    </select>
+                </div>
+                
+                <div id="ticketDetails" style="background: #e8eef7; padding: 15px; border-radius: 5px; margin-bottom: 20px; display: none;">
+                    <p><strong>บริษัท:</strong> <span id="detailCompany"></span></p>
+                    <p><strong>คำอธิบาย:</strong> <span id="detailDescription"></span></p>
+                    <p><strong>ทักษะที่ต้อง:</strong> <span id="detailSkills"></span></p>
+                </div>
+                
+                <button class="btn-submit" onclick="getEmployeeRecommendation()" id="submitEmpBtn">
+                    <i class="fas fa-magic"></i> Get Recommendation
+                </button>
+                
+                <div class="loading-spinner" id="empSpinner">
+                    <i class="fas fa-spinner fa-spin"></i> กำลังวิเคราะห์...
+                </div>
+                
+                <div class="error-box" id="empError"></div>
+                
+                <div class="recommendation-box" id="empRecommendation">
+                    <div id="empRecommendationContent"></div>
+                </div>
+            </div>
+            
+            <!-- Team Recommendation Tab -->
+            <div id="team-tab" class="tab-content">
+                <div class="info-section">
+                    <strong>🚀 สร้างทีมที่สมดุลสำหรับโครงการ</strong>
+                    ระบบ AI จะแนะนำการจัดทีมที่มีความสมดุลและมีประสิทธิภาพ
+                </div>
+                
+                <div class="input-group">
+                    <label for="ticketSelectTeam">เลือก Ticket *</label>
+                    <select id="ticketSelectTeam">
+                        <option value="">-- Loading tickets... --</option>
+                    </select>
+                </div>
+                
+                <div id="ticketDetailsTeam" style="background: #e8eef7; padding: 15px; border-radius: 5px; margin-bottom: 20px; display: none;">
+                    <p><strong>บริษัท:</strong> <span id="detailCompanyTeam"></span></p>
+                    <p><strong>คำอธิบาย:</strong> <span id="detailDescriptionTeam"></span></p>
+                    <p><strong>ทักษะที่ต้อง:</strong> <span id="detailSkillsTeam"></span></p>
+                </div>
+                
+                <button class="btn-submit" onclick="getTeamRecommendation()" id="submitTeamBtn">
+                    <i class="fas fa-magic"></i> Get Team Recommendation
+                </button>
+                
+                <div class="loading-spinner" id="teamSpinner">
+                    <i class="fas fa-spinner fa-spin"></i> กำลังวิเคราะห์...
+                </div>
+                
+                <div class="error-box" id="teamError"></div>
+                
+                <div class="recommendation-box" id="teamRecommendation">
+                    <div id="teamRecommendationContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Markdown Parser Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+    <!-- KaTeX for Math Rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.0/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.0/contrib/auto-render.min.js"></script>
+    
+    <script>
+        // Configure marked options for better markdown rendering
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            pedantic: false,
+            headerIds: true,
+            mangle: false,
+            sanitize: false,
+            smartLists: true,
+            smartypants: false,
+        });
+        
+        // Custom renderer for tables
+        const renderer = new marked.Renderer();
+        renderer.table = function(header, body) {
+            return '<table>' + '<thead>' + header + '</thead>' + '<tbody>' + body + '</tbody></table>';
+        };
+        marked.setOptions({ renderer });
+        
+        let ticketsData = [];
+        
+        function loadTicketsList() {
+            fetch('/api/tickets-list')
+                .then(r => r.json())
+                .then(data => {
+                    ticketsData = data.tickets;
+                    
+                    // Populate employee tab select
+                    const selectEmp = document.getElementById('ticketSelect');
+                    selectEmp.innerHTML = '<option value="">-- เลือก Ticket --</option>';
+                    data.tickets.forEach(ticket => {
+                        const option = document.createElement('option');
+                        option.value = ticket.ticket_id;
+                        option.textContent = `${ticket.ticket_id} - ${ticket.customer_company}`;
+                        selectEmp.appendChild(option);
+                    });
+                    
+                    // Populate team tab select
+                    const selectTeam = document.getElementById('ticketSelectTeam');
+                    selectTeam.innerHTML = '<option value="">-- เลือก Ticket --</option>';
+                    data.tickets.forEach(ticket => {
+                        const option = document.createElement('option');
+                        option.value = ticket.ticket_id;
+                        option.textContent = `${ticket.ticket_id} - ${ticket.customer_company}`;
+                        selectTeam.appendChild(option);
+                    });
+                    
+                    // Add change listeners
+                    selectEmp.addEventListener('change', showTicketDetailsEmp);
+                    selectTeam.addEventListener('change', showTicketDetailsTeam);
+                })
+                .catch(err => console.error('Error loading tickets:', err));
+        }
+        
+        function showTicketDetailsEmp(e) {
+            const ticketId = e.target.value;
+            if (!ticketId) {
+                document.getElementById('ticketDetails').style.display = 'none';
+                return;
+            }
+            
+            const ticket = ticketsData.find(t => t.ticket_id === ticketId);
+            if (ticket) {
+                document.getElementById('detailCompany').textContent = ticket.customer_company;
+                document.getElementById('detailDescription').textContent = ticket.issue_description;
+                document.getElementById('detailSkills').textContent = ticket.skill_count + ' skills';
+                document.getElementById('ticketDetails').style.display = 'block';
+            }
+        }
+        
+        function showTicketDetailsTeam(e) {
+            const ticketId = e.target.value;
+            if (!ticketId) {
+                document.getElementById('ticketDetailsTeam').style.display = 'none';
+                return;
+            }
+            
+            const ticket = ticketsData.find(t => t.ticket_id === ticketId);
+            if (ticket) {
+                document.getElementById('detailCompanyTeam').textContent = ticket.customer_company;
+                document.getElementById('detailDescriptionTeam').textContent = ticket.issue_description;
+                document.getElementById('detailSkillsTeam').textContent = ticket.skill_count + ' skills';
+                document.getElementById('ticketDetailsTeam').style.display = 'block';
+            }
+        }
+        
+        function switchTab(tab) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tab + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        function getEmployeeRecommendation() {
+            const ticketId = document.getElementById('ticketSelect').value.trim();
+            const spinner = document.getElementById('empSpinner');
+            const errorBox = document.getElementById('empError');
+            const recommendationBox = document.getElementById('empRecommendation');
+            const btn = document.getElementById('submitEmpBtn');
+            
+            // Clear previous results
+            errorBox.classList.remove('show');
+            recommendationBox.classList.remove('show');
+            
+            if (!ticketId) {
+                errorBox.textContent = '❌ Please select a Ticket';
+                errorBox.classList.add('show');
+                return;
+            }
+            
+            // Show loading
+            spinner.classList.add('show');
+            btn.disabled = true;
+            
+            fetch('/api/recommendations/employee-for-ticket', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ticket_id: ticketId })
+            })
+                .then(r => r.json())
+                .then(data => {
+                    spinner.classList.remove('show');
+                    btn.disabled = false;
+                    
+                    if (data.error) {
+                        errorBox.textContent = '❌ ' + data.error;
+                        errorBox.classList.add('show');
+                    } else {
+                        const htmlContent = marked.parse(data.recommendation);
+                        const contentDiv = document.createElement('div');
+                        contentDiv.className = 'markdown-content';
+                        contentDiv.innerHTML = htmlContent;
+                        
+                        const empContent = document.getElementById('empRecommendationContent');
+                        empContent.innerHTML = '';
+                        empContent.appendChild(contentDiv);
+                        
+                        // Render math equations
+                        renderMathInElement(empContent, {
+                            delimiters: [
+                                {left: '$$', right: '$$', display: true},
+                                {left: '$', right: '$', display: false}
+                            ]
+                        });
+                        
+                        recommendationBox.classList.add('show');
+                    }
+                })
+                .catch(err => {
+                    spinner.classList.remove('show');
+                    btn.disabled = false;
+                    errorBox.textContent = '❌ Error: ' + err.message;
+                    errorBox.classList.add('show');
+                });
+        }
+        
+        function getTeamRecommendation() {
+            const ticketId = document.getElementById('ticketSelectTeam').value.trim();
+            const spinner = document.getElementById('teamSpinner');
+            const errorBox = document.getElementById('teamError');
+            const recommendationBox = document.getElementById('teamRecommendation');
+            const btn = document.getElementById('submitTeamBtn');
+            
+            // Clear previous results
+            errorBox.classList.remove('show');
+            recommendationBox.classList.remove('show');
+            
+            if (!ticketId) {
+                errorBox.textContent = '❌ Please select a Ticket';
+                errorBox.classList.add('show');
+                return;
+            }
+            
+            // Show loading
+            spinner.classList.add('show');
+            btn.disabled = true;
+            
+            fetch('/api/recommendations/team-for-ticket', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ticket_id: ticketId })
+            })
+                .then(r => r.json())
+                .then(data => {
+                    spinner.classList.remove('show');
+                    btn.disabled = false;
+                    
+                    if (data.error) {
+                        errorBox.textContent = '❌ ' + data.error;
+                        errorBox.classList.add('show');
+                    } else {
+                        const htmlContent = marked.parse(data.recommendation);
+                        const contentDiv = document.createElement('div');
+                        contentDiv.className = 'markdown-content';
+                        contentDiv.innerHTML = htmlContent;
+                        
+                        const teamContent = document.getElementById('teamRecommendationContent');
+                        teamContent.innerHTML = '';
+                        teamContent.appendChild(contentDiv);
+                        
+                        // Render math equations
+                        renderMathInElement(teamContent, {
+                            delimiters: [
+                                {left: '$$', right: '$$', display: true},
+                                {left: '$', right: '$', display: false}
+                            ]
+                        });
+                        
+                        recommendationBox.classList.add('show');
+                    }
+                })
+                .catch(err => {
+                    spinner.classList.remove('show');
+                    btn.disabled = false;
+                    errorBox.textContent = '❌ Error: ' + err.message;
+                    errorBox.classList.add('show');
+                });
+        }
+        
+        // Load tickets on page load
+        window.addEventListener('load', loadTicketsList);
+    </script>
+</body>
+</html>
